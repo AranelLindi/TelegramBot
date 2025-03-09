@@ -1,8 +1,39 @@
 version: "3.8"
 
 services:
-  telegram-bot:
-    container_name: TelegramBot
+  telegrambot:
+    image: telegrambot
+    container_name: telegrambot
+    networks:
+      - sensor_network
+    depends_on:
+      - sensors2rpi
     restart: unless-stopped
     env_file:
       - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    sensors2rpi:
+      image: sensors2rpi
+      container_name: sensors2rpi
+      networks:
+        - sensor_network
+      ports:
+        - "8080:8080"
+        - "1883:1883"
+      restart: unless-stopped
+
+networks:
+  sensor_network:
+    external: true # verwendet das existierende Netzwerk
+
+
+# Telegram Bot hängt sich an bestehendes sensors2rpi an:
+# Falls sensors2rpi bereits läuft, wird es nicht neu gestartet
+# Falls sensors2rpi noch nicht läuft, wird es automatisch gestartet
+
+# Soll der Bot nur getestet werden, kann er auch mit cargo run lokal ausgeführt werden
