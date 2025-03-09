@@ -1,0 +1,14 @@
+[package]
+name = "TelegramBot"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+teloxide = { version = "0.12", features = ["macros"] }
+tokio = { version = "1", features = ["full"]  }
+reqwest = { version = "0.11", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+dotenv = "0.15"
+serde_json = "1"
+simplelog = "0.12"
+log = "0.4"
